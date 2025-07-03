@@ -6,7 +6,7 @@ import com.miempresa.mifinca.mifincaapi.Model.Finca;
 import java.util.Random;
 
 @Service
-public class RegisterFinca {
+public class RegisterFincaService {
     @Autowired
     private FincaService fincaService;
 

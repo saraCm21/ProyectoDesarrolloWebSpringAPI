@@ -4,7 +4,7 @@ import com.miempresa.mifinca.mifincaapi.Model.Finca;
 import com.miempresa.mifinca.mifincaapi.Model.Usuario;
 import com.miempresa.mifinca.mifincaapi.Service.ForgotService;
 import com.miempresa.mifinca.mifincaapi.Service.LoginService;
-import com.miempresa.mifinca.mifincaapi.Service.RegisterFinca;
+import com.miempresa.mifinca.mifincaapi.Service.RegisterFincaService;
 import com.miempresa.mifinca.mifincaapi.Service.SendEmailService;
 import com.miempresa.mifinca.mifincaapi.Service.SignUpService;
 
@@ -75,7 +75,7 @@ class LoginServiceIntegrationTest {
 	}	
 
 	@Autowired
-	private RegisterFinca createFincaService;
+	private RegisterFincaService createFincaService;
 
 	@Test
 	void crearFincaConCodigos_asignaIdsCorrectos() {
