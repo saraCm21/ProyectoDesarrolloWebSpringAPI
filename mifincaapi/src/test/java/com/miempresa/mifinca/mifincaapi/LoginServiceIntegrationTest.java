@@ -1,7 +1,11 @@
 package com.miempresa.mifinca.mifincaapi;
 
+import com.miempresa.mifinca.mifincaapi.Model.Finca;
 import com.miempresa.mifinca.mifincaapi.Model.Usuario;
+import com.miempresa.mifinca.mifincaapi.Service.ForgotService;
 import com.miempresa.mifinca.mifincaapi.Service.LoginService;
+import com.miempresa.mifinca.mifincaapi.Service.RegisterFinca;
+import com.miempresa.mifinca.mifincaapi.Service.SendEmailService;
 import com.miempresa.mifinca.mifincaapi.Service.SignUpService;
 
 import org.junit.jupiter.api.Test;
@@ -10,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class LoginServiceIntegrationTest {
@@ -46,6 +51,59 @@ class LoginServiceIntegrationTest {
 		Usuario guardado = signUpService.registrarUsuario(usuario);
 
 		System.out.println("Usuario guardado: " + guardado.getUsername());
+	}
+
+	@Autowired
+	private SendEmailService sendEmailService;
+
+	@Test
+	void sendEmail_enviaCorreoYActualizaUsuario() {
+		boolean resultado = sendEmailService.sendEmail("saracastellano2108@gmail.com");
+		assertThat(resultado).isTrue();
+	}
+
+	@Autowired
+	private ForgotService forgotService;
+
+	@Test
+	void testForgotPassword() {
+		String email = "saracastellano2108@gmail.com";
+		String newPassword = "12345";
+		int codigo = 879358;
+		boolean resultado = forgotService.cambiarPassword(email, codigo, newPassword);	
+		assertTrue(resultado, "La contraseña se ha cambiado correctamente");
+	}	
+
+	@Autowired
+	private RegisterFinca createFincaService;
+
+	@Test
+	void crearFincaConCodigos_asignaIdsCorrectos() {
+		// Crear finca de prueba
+		Finca finca = new Finca();
+		finca.setNombre("Finqiota testing");
+		finca.setNumHectareas(10);
+		finca.setMetrosCuadrados(10000);
+		finca.setPais("Colombia");
+		finca.setDepartamento("Antioquia");
+		finca.setCiudad("Medellín");
+		finca.setMetrosCuadrados(100000);
+		finca.setPais("Colombia");
+		finca.setDepartamento("Antioquia");
+		finca.setCiudad("Medellín");
+		finca.setSiProduceCereales(true);
+		finca.setSiProduceFrutas(true);
+		finca.setSiProduceLeche(true);
+		finca.setSiProduceVerduras(true);
+
+		// Usar el servicio para asignar los IDs usando los códigos de usuario
+		Finca guardada = createFincaService.createFinca(
+				finca,
+				"889180", // Código del propietario
+				"546951",
+				"652262");
+
+		assertThat(guardada).isNotNull();
 	}
 
 }
